@@ -86,6 +86,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // AI job matching: fetch a compact JSON score without leaving the current page.
+  $$(".match-btn").forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const card = button.closest("article") || document;
+      const result = $(".match-result", card);
+      const url = button.dataset.matchUrl || `/opportunities/${button.dataset.matchId}/match`;
+      if (!result) return;
+      button.disabled = true;
+      button.textContent = "Analyzing…";
+      try {
+        const response = await fetch(url, { headers: { Accept: "application/json" } });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Match failed");
+        result.innerHTML = `<div class="flex items-center justify-between"><strong>AI Match</strong><span class="text-violet-300 font-bold text-lg">${data.score}%</span></div><p class="text-gray-500 mt-2">${data.matched?.length ? `Matched: ${data.matched.join(", ")}` : "No matching skills found yet."}</p>${data.missing?.length ? `<p class="text-gray-500 mt-1">Build next: ${data.missing.join(", ")}</p>` : "<p class=\"text-emerald-300 mt-1\">Great coverage for the listed skills.</p>"}`;
+        result.classList.remove("hidden");
+      } catch (error) {
+        result.textContent = error.message;
+        result.classList.remove("hidden");
+      } finally {
+        button.disabled = false;
+        button.textContent = "🤖 AI Match";
+      }
+    });
+  });
+
   // Auto-dismiss status toasts.
   const toast = $("[data-toast]");
   if (toast) setTimeout(() => toast.remove(), 4200);

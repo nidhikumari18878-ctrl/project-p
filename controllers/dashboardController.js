@@ -7,13 +7,14 @@ exports.getDashboard = async (req, res) => {
     const user = await userModel.findById(req.user.id).lean();
     if (!user) return res.redirect("/login");
 
-    const [applications, totalApplications, totalInterviews, totalSelected, totalOA, resumeData] = await Promise.all([
+    const [applications, totalApplications, totalInterviews, totalSelected, totalOA, resumeData, upcoming] = await Promise.all([
       applicationModel.find({ user: user._id }).sort({ updatedAt: -1 }).limit(6).lean(),
       applicationModel.countDocuments({ user: user._id }),
       applicationModel.countDocuments({ user: user._id, status: "Interview" }),
       applicationModel.countDocuments({ user: user._id, status: "Selected" }),
       applicationModel.countDocuments({ user: user._id, status: "OA Round" }),
       Resume.findOne({ userId: user._id }).sort({ createdAt: -1 }).lean(),
+      applicationModel.find({ user: user._id, $or: [{ interviewDate: { $gte: new Date() } }, { deadline: { $gte: new Date() } }] }).sort({ interviewDate: 1, deadline: 1 }).limit(4).lean(),
     ]);
 
     res.render("dashboard", {
@@ -24,6 +25,7 @@ exports.getDashboard = async (req, res) => {
       totalSelected,
       totalOA,
       resumeData,
+      upcoming,
     });
   } catch (error) {
     console.error("Dashboard error:", error);

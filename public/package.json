@@ -1,0 +1,36 @@
+{
+  "name": "placement-tracker",
+  "version": "1.0.0",
+  "description": "AI-powered placement tracking and resume analysis platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "check": "node --check index.js && find controllers middlewares models routes utils public/javascripts -type f -name \"*.js\" -print0 | xargs -0 -n1 node --check",
+    "test": "npm run check"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.18.1",
+    "bcrypt": "^6.0.0",
+    "config": "^4.4.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "env": "^0.0.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.2.0",
+    "mongoose": "^8.24.1",
+    "multer": "^2.1.1",
+    "pdf-parse": "^1.1.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

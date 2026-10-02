@@ -12,6 +12,8 @@ const applicationSchema = new mongoose.Schema(
     location: { type: String, trim: true, default: "-" },
     package: { type: String, trim: true, default: "-" },
     note: { type: String, trim: true, default: "" },
+    interviewDate: { type: Date },
+    deadline: { type: Date },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

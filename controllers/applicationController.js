@@ -41,6 +41,8 @@ exports.create = async (req, res) => {
       location: String(req.body.location || "-").trim(),
       package: String(req.body.package || "-").trim(),
       note: String(req.body.note || "").trim(),
+      interviewDate: req.body.interviewDate || undefined,
+      deadline: req.body.deadline || undefined,
       user: user._id,
     });
 

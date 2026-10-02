@@ -41,3 +41,27 @@ The app uses `PORT` when supplied, otherwise `5000`.
 - Do not commit `.env`, uploaded resumes, or secrets.
 - Use the platform's environment-variable settings for production secrets.
 - The `/health` endpoint returns a simple JSON health response.
+
+
+## New productivity features
+
+The latest version adds: 
+- **AI Job Match**: compares opportunity skills with available resume/profile text and shows matched/missing skills.
+- **Saved Jobs**: user-specific shortlist stored in MongoDB.
+- **Placement Calendar**: interview and application deadline tracking.
+- **Placement Goals**: measurable application/interview targets with progress bars.
+- **Analytics**: application status funnel and monthly activity.
+- **Animated UI**: reveal animations, counters, progress effects and reduced-motion support.
+
+### Run
+
+```bash
+npm install
+cp .env.example .env
+# configure MongoDB/JWT/session secrets (and optional Gemini/RapidAPI keys)
+npm start
+```
+
+Windows CMD: `copy .env.example .env`
+
+For AI Match, no extra package is required; it uses the opportunity skill list plus the user's stored resume analysis/profile data.
