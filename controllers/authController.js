@@ -1,87 +1,84 @@
 const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-exports.showregister = (req, res) => {
-  res.render("register");
-};
-// Register
+
+exports.showregister = (req, res) => res.render("register");
+
 exports.register = async (req, res) => {
   try {
-     
-    const { name, email, password } = req.body;
+    const name = String(req.body.name || "").trim();
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const password = String(req.body.password || "");
+    const confirmPassword = String(req.body.confirmPassword || "");
 
-    if (!name || !email || !password) {
-      return res.send("Please fill all fields");
+    if (!name || !email || !password || !confirmPassword) {
+      return res.status(400).render("register", { error: "Please fill all fields." });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).render("register", { error: "Password must be at least 6 characters." });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).render("register", { error: "Passwords do not match." });
     }
 
     const existingUser = await userModel.findOne({ email });
-
-    if (existingUser) { 
-     return res.redirect("/login")
+    if (existingUser) {
+      return res.status(409).render("register", { error: "An account with this email already exists." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12);
+    await userModel.create({ name, email, password: hashedPassword });
 
-    await userModel.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    res.redirect("/login")
-  }catch (error) {
-    console.log(error);
-    res.send(error);
-}
+    return res.redirect("/login?registered=1");
+  } catch (error) {
+    console.error("Register error:", error);
+    return res.status(500).render("register", { error: "Unable to create your account right now." });
+  }
 };
 
-// Login Page
-exports.showLogin = (req, res) => {
-  res.render("login");
-};
+exports.showLogin = (req, res) => res.render("login");
 
-// Login
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const password = String(req.body.password || "");
 
     if (!email || !password) {
-      return res.send("Email aur Password required hai");
+      return res.status(400).render("login", { error: "Email and password are required." });
     }
 
     const user = await userModel.findOne({ email });
-
-    // User not found
     if (!user) {
-      return res.send("no account exist");
+      return res.status(401).render("login", { error: "Invalid email or password." });
     }
 
-    // Password check
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (!isMatch) {
-      return res.send("something went wrong");
+      return res.status(401).render("login", { error: "Invalid email or password." });
     }
 
-    // JWT Token
+    if (!process.env.JWT_KEY) {
+      throw new Error("JWT_KEY is not configured.");
+    }
+
     const token = jwt.sign(
-      {
-        email: user.email,
-        id: user._id,
-      },
-      process.env.JWT_KEY
+      { email: user.email, id: user._id.toString() },
+      process.env.JWT_KEY,
+      { expiresIn: "7d" }
     );
 
-    // Cookie set
     res.cookie("token", token, {
       httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    // Dashboard open
     return res.redirect("/dashboard");
-
   } catch (error) {
-    console.log(error);
-    res.send(error);
-}
+    console.error("Login error:", error);
+    return res.status(500).render("login", { error: "Unable to log in right now." });
+  }
 };

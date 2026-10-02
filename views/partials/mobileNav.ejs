@@ -1,0 +1,9 @@
+<nav class="lg:hidden sticky top-0 z-30 px-4 py-3 border-b border-white/10 bg-black/75 backdrop-blur-xl flex items-center justify-between">
+  <a href="/dashboard" class="flex items-center gap-2"><span class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 grid place-items-center text-xs font-bold">PT</span><span class="font-semibold">Placement Tracker</span></a>
+  <div class="flex items-center gap-1 text-xs">
+    <a href="/dashboard" class="px-2 py-2 rounded-lg <%= currentPath === '/dashboard' ? 'bg-violet-500/20 text-violet-300' : 'text-gray-400' %>">Home</a>
+    <a href="/application" class="px-2 py-2 rounded-lg <%= currentPath === '/application' ? 'bg-violet-500/20 text-violet-300' : 'text-gray-400' %>">Apps</a>
+    <a href="/resume" class="px-2 py-2 rounded-lg <%= currentPath === '/resume' ? 'bg-violet-500/20 text-violet-300' : 'text-gray-400' %>">AI</a>
+    <a href="/profile" class="px-2 py-2 rounded-lg <%= currentPath === '/profile' ? 'bg-violet-500/20 text-violet-300' : 'text-gray-400' %>">Me</a>
+  </div>
+</nav>

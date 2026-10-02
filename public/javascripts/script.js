@@ -1,284 +1,92 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // =========================
-  // LOCAL STORAGE
-  // =========================
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  let applications = JSON.parse(localStorage.getItem("applications")) || [];
+  // Smooth reveal for page sections.
+  $$("[data-reveal]").forEach((el, index) => {
+    el.style.animationDelay = `${Math.min(index * 55, 330)}ms`;
+    el.classList.add("reveal");
+  });
 
-  // =========================
-  // APPLICATION PAGE ELEMENTS
-  // =========================
+  // Animated numbers without replacing server-rendered values.
+  $$("[data-count]").forEach((el) => {
+    const target = Number(el.dataset.count || 0);
+    if (!Number.isFinite(target)) return;
+    const duration = 750;
+    const start = performance.now();
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(target * eased).toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
 
-  const openBtn = document.getElementById("openModalBtn");
-
-  const modal = document.getElementById("applicationModal");
-
-  const closeBtn = document.getElementById("closeModalBtn");
-
-  const closeBtn2 = document.getElementById("closeModalBtn2");
-
-  const form = document.getElementById("applicationForm");
-
-  const tableBody = document.getElementById("applicationTableBody");
-const resumeBtn = document.getElementById("resumeBtn");
-
-if (resumeBtn) {
-    resumeBtn.addEventListener("click", () => {
-        window.location.href = "/resume";
-    });
-}
-const suggestions = [
-  "Improve your DSA and React skills to increase placement chances.",
-  "Practice 2 LeetCode problems daily.",
-  "Build one full-stack MERN project.",
-  "Strengthen your SQL and DBMS concepts.",
-  "Update your resume with recent projects.",
-  "Practice HR interview questions.",
-  "Improve communication and aptitude skills.",
-  "Contribute to an open-source project.",
-  "Revise OOPs and Operating System concepts.",
-  "Optimize your LinkedIn profile."
-];
-const suggestion = document.getElementById("aiSuggestion");
-
-if (suggestion) {
-    const randomIndex = Math.floor(Math.random() * suggestions.length);
-    suggestion.textContent = suggestions[randomIndex];
-}
-const progressBar = document.getElementById("progressBar");
-
-if (progressBar) {
-    const atsScore = Number(progressBar.dataset.score) || 0;
-    const progressFill = document.getElementById("progressFill");
-
-    if (progressFill) {
-        progressFill.style.width = Math.min(atsScore, 100) + "%";
-    }
-}
-
-  // =========================
-  // OPEN MODAL
-  // =========================
-
-  if (openBtn) {
-    openBtn.addEventListener("click", () => {
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    });
-  }
-
-  // =========================
-  // CLOSE MODAL
-  // =========================
-
-  function closeModal() {
-    if (modal) {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }
-  }
-
-  if (closeBtn) {
-    closeBtn.addEventListener("click", closeModal);
-  }
-
-  if (closeBtn2) {
-    closeBtn2.addEventListener("click", closeModal);
-  }
-
-  // =========================
-  // DISPLAY APPLICATIONS
-  // =========================
-
-  function displayApplications() {
-    if (!tableBody) return;
-
-    tableBody.innerHTML = "";
-
-    applications.forEach((app, index) => {
-      const row = `
-      
-      <tr class="border-b hover:bg-gray-700 hover:border-violet-500  transition">
-
-        <td class="py-4 ">${app.company||"-"}</td>
-
-        <td>${app.role ||"-"}</td>
-
-        <td>${app.date ||"-"}</td>
-
-        <td>
-          <span class="bg-violet-100 text-violet-700 px-3 py-1 rounded-full text-sm">
-            ${app.status ||"-"}
-          </span>
-        </td>
-
-        <td>${app.packageValue ||"-"}</td>
-        <td>${app.notes ||"-"}</td>
-
-       ${
-        window.location.pathname.includes("application")?`
-         <td>
-          <button
-            onclick="deleteApplication(${index})"
-            class="text-red-500"
-          >
-            Delete
-          </button>
-        </td>
-      ` : ""
-       }
-      </tr>
-
-      `;
-
-      tableBody.innerHTML += row;
-    });
-  }
-
-  displayApplications();
-
-  // =========================
-  // ADD APPLICATION
-  // =========================
-
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const inputs = form.querySelectorAll("input");
-
-      const company = inputs[0].value;
-
-      const role = inputs[1].value;
-
-      const packageValue = inputs[2].value;
-
-      const status = form.querySelector("select").value;
-
-      const notes = form.querySelector("textarea").value;
-
-      const date = new Date().toLocaleDateString();
-
-      const newApplication = {
-        company,
-        role,
-        packageValue,
-        status,
-        notes,
-        date,
-      };
-
-      applications.push(newApplication);
-
-      localStorage.setItem("applications", JSON.stringify(applications));
-
-      displayApplications();
-
-      form.reset();
-
-      closeModal();
-
-      updateDashboard();
-    });
-  }
-
-  // =========================
-  // DELETE
-  // =========================
-
-  window.deleteApplication = function (index) {
-    applications.splice(index, 1);
-
-    localStorage.setItem("applications", JSON.stringify(applications));
-
-    displayApplications();
-
-    updateDashboard();
+  // Generic modal used by the application page.
+  const modal = $("#applicationModal");
+  const openBtn = $("#openModalBtn");
+  const closeButtons = $$("[data-close-modal]");
+  const closeModal = () => {
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
   };
+  const openModal = () => {
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    const firstInput = $("input", modal);
+    if (firstInput) setTimeout(() => firstInput.focus(), 80);
+  };
+  if (openBtn) openBtn.addEventListener("click", openModal);
+  closeButtons.forEach((button) => button.addEventListener("click", closeModal));
+  if (modal) modal.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeModal(); });
 
-  // =========================
-  // DASHBOARD
+  // Application search + status filter work only on the already-rendered DB rows.
+  const tableBody = $("#applicationTableBody");
+  const searchInput = $("#searchInput");
+  const statusFilter = $("#statusFilter");
+  const emptyState = $("#applicationEmptyState");
+  const filterRows = () => {
+    if (!tableBody) return;
+    const search = (searchInput?.value || "").trim().toLowerCase();
+    const status = statusFilter?.value || "All Status";
+    let visible = 0;
 
-  function updateDashboard() {
-    const totalApplications = document.getElementById("totalApplications");
+    $$('tr[data-application-row]', tableBody).forEach((row) => {
+      const matchesSearch = row.innerText.toLowerCase().includes(search);
+      const matchesStatus = status === "All Status" || row.dataset.status === status;
+      const show = matchesSearch && matchesStatus;
+      row.classList.toggle("hidden", !show);
+      if (show) visible += 1;
+    });
 
-    const totalInterviews = document.getElementById("totalInterviews");
+    if (emptyState) emptyState.classList.toggle("hidden", visible !== 0);
+  };
+  if (searchInput) searchInput.addEventListener("input", filterRows);
+  if (statusFilter) statusFilter.addEventListener("change", filterRows);
+  filterRows();
 
-    const totalSelected = document.getElementById("totalSelected");
-    const totalOA = document.getElementById("totalOA");
-    
-
-    if (totalApplications) {
-      totalApplications.innerText = applications.length;
-    }
-
-    if (totalInterviews) {
-      const interviews = applications.filter(
-        (app) => app.status === "Interview",
-      );
-
-      totalInterviews.innerText = interviews.length;
-    }
-
-    if (totalSelected) {
-      const selected = applications.filter((app) => app.status === "Selected");
-
-      totalSelected.innerText = selected.length;
-    }
-    if (totalOA) {
-      const OA = applications.filter((app) => app.status === "OA Round");
-
-      totalOA.innerText = OA.length;
-    }
-
+  // Resume score animation.
+  const progress = $("[data-score-progress]");
+  if (progress) {
+    const score = Math.max(0, Math.min(100, Number(progress.dataset.scoreProgress) || 0));
+    requestAnimationFrame(() => { progress.style.width = `${score}%`; });
   }
 
-  updateDashboard();
-  // =========================
-  // SEARCH
-  // =========================
-
-  const searchInput = document.getElementById("searchInput");
-
-  if (searchInput) {
-    searchInput.addEventListener("keyup", () => {
-      const value = searchInput.value.toLowerCase();
-
-      const rows = tableBody.querySelectorAll("tr");
-
-      rows.forEach((row) => {
-        const text = row.innerText.toLowerCase();
-
-        if (text.includes(value)) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
-      });
+  // File feedback for resume uploads.
+  const resumeInput = $("#resumeFile");
+  const fileName = $("#resumeFileName");
+  if (resumeInput && fileName) {
+    resumeInput.addEventListener("change", () => {
+      const file = resumeInput.files?.[0];
+      fileName.textContent = file ? `${file.name} • ${(file.size / 1024 / 1024).toFixed(2)} MB` : "No file selected";
     });
   }
-  // =========================
-  // FILTER
-  const statusFilter = document.getElementById("statusFilter");
 
-  if (statusFilter) {
-    statusFilter.addEventListener("change", () => {
-      const value = statusFilter.value;
-
-      const rows = tableBody.querySelectorAll("tr");
-
-      rows.forEach((row) => {
-        if (value === "All Status") {
-          row.style.display = "";
-        } else {
-          if (row.innerText.includes(value)) {
-            row.style.display = "";
-          } else {
-            row.style.display = "none";
-          }
-        }
-      });
-    });
-  }
+  // Auto-dismiss status toasts.
+  const toast = $("[data-toast]");
+  if (toast) setTimeout(() => toast.remove(), 4200);
 });
-

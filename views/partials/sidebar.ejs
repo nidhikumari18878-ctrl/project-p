@@ -1,0 +1,17 @@
+<aside class="hidden lg:flex w-72 shrink-0 min-h-screen sticky top-0 p-5 border-r border-white/10 bg-black/35 backdrop-blur-xl flex-col">
+  <a href="/dashboard" class="flex items-center gap-3 px-3 py-4 mb-7 group">
+    <span class="w-11 h-11 rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 grid place-items-center font-extrabold shadow-lg shadow-violet-900/30 group-hover:scale-105 transition">PT</span>
+    <span><strong class="block text-white">Placement Tracker</strong><small class="text-gray-500">Career command center</small></span>
+  </a>
+  <nav class="space-y-2">
+    <a href="/dashboard" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent <%= currentPath === '/dashboard' ? 'active' : 'text-gray-400 hover:text-white hover:bg-white/5' %>">📊 <span>Dashboard</span></a>
+    <a href="/application" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent <%= currentPath === '/application' ? 'active' : 'text-gray-400 hover:text-white hover:bg-white/5' %>">📌 <span>Applications</span></a>
+    <a href="/opportunities" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent <%= currentPath === '/opportunities' ? 'active' : 'text-gray-400 hover:text-white hover:bg-white/5' %>">🏢 <span>Opportunities</span></a>
+    <a href="/resume" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent <%= currentPath === '/resume' ? 'active' : 'text-gray-400 hover:text-white hover:bg-white/5' %>">📄 <span>Resume AI</span></a>
+    <a href="/profile" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent <%= currentPath === '/profile' ? 'active' : 'text-gray-400 hover:text-white hover:bg-white/5' %>">👤 <span>Profile</span></a>
+  </nav>
+  <div class="mt-auto glass rounded-3xl p-4">
+    <p class="text-xs uppercase tracking-[.18em] text-violet-300 mb-2">Placement mode</p>
+    <p class="text-sm text-gray-300">Stay consistent. Track every application. Improve every iteration.</p>
+  </div>
+</aside>

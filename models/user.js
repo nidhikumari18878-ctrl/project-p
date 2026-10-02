@@ -1,22 +1,15 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    age: { type: Number, min: 13, max: 100 },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    password: { type: String, required: true },
+    image: { type: String, default: "https://i.pravatar.cc/150?img=12" },
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
+  },
+  { timestamps: true }
+);
 
-// mongoose.connect("mongodb://127.0.0.1:27017/miniproject");
-const userSchema=mongoose.Schema({
-    
-    name:String,
-    age:Number,
-    email:String,
-    password:String,
-    image:{
-      type:String,
-      default:"default.webp"
-    },
-   posts: { type: [mongoose.Schema.Types.ObjectId],
-     ref: "post", 
-     default: []
-     }
-});
-module.exports =
-  mongoose.models.User ||
-  mongoose.model("User", userSchema);
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);
