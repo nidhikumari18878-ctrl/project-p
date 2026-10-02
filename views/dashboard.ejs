@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dashboard - Placement Tracker</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-black text-white">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+     <aside class="w-72 bg-zinc-950 border-r border-zinc-800 p-6 hidden md:block">
+
+  <div class="flex items-center gap-3 mb-12">
+
+    <div class="w-12 h-12 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 flex items-center justify-center text-white font-bold shadow-lg">
+      PT
+    </div>
+
+    <h1 class="font-bold text-lg text-white">
+      Placement Tracker
+    </h1>
+
+  </div>
+
+  <nav class="space-y-3">
+
+    <a href="/dashboard"
+      class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 text-violet-400 border border-violet-500/20">
+
+      📊 Dashboard
+
+    </a>
+
+    <a href="/application"
+      class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:border-white bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 text-violet-400 border border-violet-500/20">
+
+      📌 Applications
+
+    </a>
+
+    <a href="/opportunities"
+      class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:border-white bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 text-violet-400 border border-violet-500/20">
+
+      🏢 Opportunities
+
+    </a>
+
+    <a href="/resume"
+      class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:border-white bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 text-violet-400 border border-violet-500/20">
+
+      📄 Resume Analyzer
+
+    </a>
+
+    <a href="/profile"
+      class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:border-white bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 text-violet-400 border border-violet-500/20">
+
+      👤 Profile
+
+    </a>
+
+  </nav>
+
+</aside>
+      <!-- Main Content -->
+      <main class="flex-1 p-8">
+        <!-- Topbar -->
+        <div class="flex items-center justify-between mb-10">
+          <!-- Left -->
+          <div>
+            <h1 class="text-3xl font-bold text-white">
+              Welcome Back, <%= user.name %> 👋
+            </h1>
+
+            <p class="text-gray-400 mt-1">
+              Track your placement journey smarter.
+            </p>
+          </div>
+
+          <!-- Right -->
+          <div class="flex items-center gap-5">
+            <button
+              class="w-11 h-11 rounded-2xl bg-zinc-900 border border-zinc-800  flex items-center justify-center"
+            >
+              🔔
+            </button>
+
+            <div
+              class="flex items-center gap-3 bg-zinc-800 px-4 py-2 rounded-2xl shadow-sm"
+            >
+              <img
+                src="<%= user.image %>"
+                class="w-10 h-10 rounded-full"
+              />
+
+              <div>
+                <h3 class="font-medium text-sm text-white"><%= user.name %></h3>
+
+                <p class="text-xs text-gray-400">Student</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+          <!-- Card -->
+          <div class="bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 p-6 rounded-3xl hover:border-violet-500 transition">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-14 h-14 rounded-2xl bg-violet-100 flex items-center justify-center text-2xl"
+              >
+                📄
+              </div>
+
+              <span class="text-green-400 text-sm font-medium">  </span>
+            </div>
+
+            <h2 id="totalApplications" class="text-3xl font-bold text-white">
+              0
+            </h2>
+
+            <p class="text-gray-400 mt-1">Applications</p>
+          </div>
+
+          <!-- Card -->
+          <div class="bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 p-6 rounded-3xl hover:border-violet-500 transition">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-2xl"
+              >
+                💼
+              </div>
+
+              <span class="text-green-400 text-sm font-medium">  </span>
+            </div>
+
+            <h2 id="totalInterviews" class="text-3xl font-bold text-white">
+              0
+            </h2>
+
+            <p class="text-gray-400 mt-1">Interviews</p>
+          </div>
+
+          <!-- Card -->
+          <div class="bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 p-6 rounded-3xl hover:border-violet-500 transition">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-2xl"
+              >
+                🏆
+              </div>
+
+              <span class="text-green-500 text-sm font-medium">  </span>
+            </div>
+
+            <h2 id="totalSelected" class="text-3xl font-bold text-white">
+              0
+            </h2>
+
+            <p class="text-gray-400 mt-1">Offers</p>
+          </div>
+
+          <!-- Card -->
+          <div class="bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 p-6 rounded-3xl hover:border-violet-500 transition">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-14 h-14 rounded-2xl bg-pink-100 flex items-center justify-center text-2xl"
+              >
+                🤖
+              </div>
+
+              <span class="text-violet-600 font-semibold">
+<%= resumeData ? resumeData.atsScore : 0 %>%
+</span>
+            </div>
+
+            <%
+let level = "Not Analyzed";
+
+if(resumeData){
+
+    if(resumeData.atsScore >= 85){
+        level = "Excellent";
+    }
+    else if(resumeData.atsScore >= 70){
+        level = "Strong";
+    }
+    else if(resumeData.atsScore >= 50){
+        level = "Average";
+    }
+    else{
+        level = "Needs Improvement";
+    }
+
+}
+%>
+
+<h2 class="text-3xl font-bold text-white">
+<%= level %>
+</h2>
+
+            <p class="text-gray-400 mt-1">Profile Score</p>
+          </div>
+        </div>
+
+        <!-- Bottom Grid -->
+        <div class="grid lg:grid-cols-3 gap-6">
+          <!-- Left -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Application Status -->
+            <div class="bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 rounded-3xl p-6">
+              <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-semibold">Recent Applications</h2>
+
+                <button class="text-violet-600 text-sm font-medium">
+                  View All
+                </button>
+              </div>
+
+              <!-- Table -->
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead>
+                    <tr class="text-left text-gray-500 text-sm border-b border-zinc-800 uppercase tracking-wider">
+                      <th class="pb-4">Company</th>
+                      <th class="pb-4">Role</th>
+                      <th class="pb-4">Date</th>
+                      <th class="pb-4">Status</th>
+                      <th class="pb-4">Package</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="applicationTableBody" class="text-gray-300">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          
+<!-- Progress -->
+            <div
+  id="progressBar"
+  data-score="<%= resumeData ? resumeData.atsScore : 0 %>"
+  class="w-full h-4 bg-zinc-800 rounded-full overflow-hidden"
+>
+  <div
+    id="progressFill"
+    class="h-full bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full"
+    style="width: 0%;">
+  </div>
+</div>
+          </div>
+
+          <!-- Right -->
+          <div class="space-y-6">
+            <!-- AI Suggestions -->
+            <div
+              class="bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-3xl p-6 text-white shadow-2xl"
+            >
+              <div class="text-4xl mb-5">🤖</div>
+
+              <h2 class="text-2xl font-semibold mb-3">AI Suggestions</h2>
+
+             <p id="aiSuggestion" class="text-violet-100 leading-relaxed mb-6">
+    Improve your DSA and React skills.
+</p>
+
+              <button
+    id="resumeBtn"
+    class="btn2 bg-black/20 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-2xl hover:bg-black/30 transition">
+    Analyze Resume
+</button>
+            </div>
+
+           
+          </div>
+        </div>
+      </main>
+    </div>
+  
+
+<script src="/javascripts/script.js"></script>
+    
+    
+  </body>
+</html>

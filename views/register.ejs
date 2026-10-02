@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Sign Up</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    body{
+      font-family: 'Poppins', sans-serif;
+    }
+
+  </style>
+
+</head>
+
+<body class="min-h-screen bg-black flex items-center justify-center p-6 text-white overflow-hidden">
+  <div class="fixed top-0 left-0 w-96 h-96 bg-violet-600/20 blur-[120px] rounded-full"></div>
+
+<div class="fixed bottom-0 right-0 w-96 h-96 bg-fuchsia-600/20 blur-[120px] rounded-full"></div>
+
+
+  <!-- Main Card -->
+  <div class="relative z-10  w-full max-w-4xl bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 rounded-3pxl shadow-2xl overflow-hidden grid lg:grid-cols-2">
+
+    <!-- Left Side -->
+    <div class="hidden lg:flex flex-col justify-center bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 border border-zinc-800  text-white p-14">
+
+      <!-- Logo -->
+      <div class="w-16 h-16 rounded-3xl bg-gradient-to-r from-violet-600 to-fuchsia-600 flex items-center justify-center text-2xl font-bold mb-8">
+        PT
+      </div>
+
+      <!-- Heading -->
+      <h1 class="text-5xl font-bold leading-tight mb-6">
+        Placement Tracker
+      </h1>
+
+      <p class="text-gray-300 text-lg leading-relaxed">
+        Organize applications, track interviews and manage your placement journey smarter.
+      </p>
+
+    </div>
+
+    <!-- Right Side -->
+    <div class="p-8 sm:p-12 lg:p-14 flex flex-col justify-center">
+
+      <!-- Top -->
+      <div class="mb-10">
+
+        <h1 class="text-4xl font-bold text-white mb-3">
+          Create Account
+        </h1>
+
+        <p class="text-gray-400">
+          Sign up to continue
+        </p>
+
+      </div>
+
+      <!-- Form -->
+      <form class="space-y-5" action="/register" method="POST">
+
+        <!-- Name -->
+        <div>
+
+          <label class="text-sm font-medium text-gray-300 block mb-2">
+            Full Name
+          </label>
+
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter your name"
+            class="w-full px-5 py-4 rounded-2xl bg-zinc-950 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+          />
+
+        </div>
+
+        <!-- Email -->
+        <div>
+
+          <label class="text-sm font-medium text-gray-300 block mb-2">
+            Email
+          </label>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            class="w-full px-5 py-4 rounded-2xl bg-zinc-950 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+          />
+
+        </div>
+
+        <!-- Password -->
+        <div>
+
+          <label class="text-sm font-medium text-gray-300 block mb-2">
+            Password
+          </label>
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Create password"
+            class="w-full px-5 py-4 rounded-2xl bg-zinc-950 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+          />
+
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+
+          <label class="text-sm font-medium text-gray-300 block mb-2">
+            Confirm Password
+          </label>
+
+          <input
+            type="password"
+            name="confirm password"
+            placeholder="Confirm password"
+            class="w-full px-5 py-4 rounded-2xl bg-zinc-950 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+          />
+
+        </div>
+
+        <!-- Button -->
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600  hover:opacity-90 transition text-white py-4 rounded-2xl font-semibold shadow-lg"
+        >
+          Create Account
+        </button>
+
+      </form>
+
+      <!-- Bottom -->
+      <p class="text-center text-gray-400 mt-8">
+
+        Already have an account?
+
+        <a
+          href="/login"
+          class="text-violet-400 font-semibold hover:text-violet-300"
+        >
+          Login
+        </a>
+
+      </p>
+
+    </div>
+
+  </div>
+  <script src="/javascripts/script.js"></script>
+
+</body>
+</html>
